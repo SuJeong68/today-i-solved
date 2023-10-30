@@ -1,55 +1,35 @@
+import java.util.HashSet;
 class Solution {
     public int solution(String numbers) {
-        // 숫자 개수 세기
-        int[] cnts = new int[10];
-        for (String s: numbers.split("")) {
-            cnts[Integer.parseInt(s)]++;
-        }
-
-        // 가장 큰 수 조합
-        StringBuilder sb = new StringBuilder();
-        for (int i = cnts.length - 1; i >= 0; i--) {
-            for (int j = 0; j < cnts[i]; j++) {
-                sb.append(i);
-            }
-        }
-        int max = Integer.parseInt(sb.toString());
-
-        // 가장 큰 수 까지의 소수 탐색
-        boolean[] primes = new boolean[max + 1];
-        for (int i = 2; i < primes.length; i++) {
-            primes[i] = true;
-        }
-
-        for (int i = 2; i < Math.sqrt(max); i++) {
-            if (!primes[i]) {
-                continue;
-            }
-            for (int j = i + i; j <= max; j += i) {
-                primes[j] = false;
-            }
-        }
-
-        // 총 개수 세기
+        HashSet<Integer> set = new HashSet<>();
+        permutation("", numbers, set);
         int count = 0;
-        for (int i = 2; i < primes.length; i++) {
-            boolean flag = false;
-            for (int j = 0; j <= 9; j++) {
-                final int fin = j;
-                long cnt = String.valueOf(i).chars().filter(c -> Character.getNumericValue(c) == fin).count();
-                if (cnt != 0) {
-                    if (cnts[j] < cnt) {
-                        flag = false;
-                        break;
-                    } else {
-                        flag = true;
-                    }
-                }
-            }
-            if (primes[i] && flag) {
+        while(set.iterator().hasNext()){
+            int a = set.iterator().next();
+            set.remove(a);
+            if(a==2) count++;
+            if(a%2!=0 && isPrime(a)){
                 count++;
             }
-        }
+        }        
         return count;
     }
+
+    public boolean isPrime(int n){
+        if(n==0 || n==1) return false;
+        for(int i=3; i<=(int)Math.sqrt(n); i+=2){
+            if(n%i==0) return false;
+        }
+        return true;
+    }
+
+        public void permutation(String prefix, String str, HashSet<Integer> set) {
+        int n = str.length();
+        //if (n == 0) System.out.println(prefix);
+        if(!prefix.equals("")) set.add(Integer.valueOf(prefix));
+        for (int i = 0; i < n; i++)
+          permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i+1, n), set);
+
+    }
+
 }
