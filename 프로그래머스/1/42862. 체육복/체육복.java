@@ -1,39 +1,25 @@
-import java.util.Arrays;
-
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        Arrays.sort(lost);
-        Arrays.sort(reserve);
+        int[] students = new int[n];
+        int answer = n;
         
-        for (int i = 0; i < lost.length; i++) {
-            for (int j = 0; j < reserve.length; j++) {
-                if (lost[i] == reserve[j]) {
-                    lost[i] = -1;
-                    reserve[j] = -1;
-                    break;
-                }
-            }
-        }
+        for (int l : lost)
+            students[l-1]--;
+        for (int r : reserve)
+            students[r-1]++;
         
-        for (int i = 0; i < lost.length; i++) {
-            if (lost[i] == -1) {
+        for (int i = 0; i < n; i++) {
+            if (students[i] != -1) {
                 continue;
             }
-            for (int j = 0; j < reserve.length; j++) {
-                if (reserve[j] == -1) {
-                    continue;
-                }
-                if (lost[i] + 1 == reserve[j] || lost[i] - 1 == reserve[j]) {
-                    lost[i] = -1;
-                    reserve[j] = -1;
-                    break;
-                }
-            }
-        }
-
-        int answer = n;
-        for (int i = 0; i < lost.length; i++) {
-            if (lost[i] != -1) {
+            
+            if (i != 0 && students[i-1] >= 1) {
+                students[i-1]--;
+                students[i]++;
+            } else if (i != n - 1 && students[i+1] >= 1) {
+                students[i+1]--;
+                students[i]++;
+            } else {
                 answer--;
             }
         }
