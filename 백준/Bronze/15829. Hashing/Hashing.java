@@ -14,7 +14,11 @@ public class Main {
 
         long sum = 0;
         for (int i = 0; i < L; i++) {
-            sum += Math.pow(r, i) * (str.charAt(i) - 96);
+            long tmp = 1;
+            for (int j = 0; j < i; j++) {
+                tmp = (tmp % M) * (r % M);
+            }
+            sum += ((tmp % M) * ((str.charAt(i) - 96) % M)) % M;
         }
         System.out.println(sum % M);
 
