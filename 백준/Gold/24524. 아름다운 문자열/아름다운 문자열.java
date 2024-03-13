@@ -6,23 +6,23 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String S = br.readLine();
-        String T = br.readLine();
+        char[] S = br.readLine().toCharArray();
+        char[] T = br.readLine().toCharArray();
 
         char[] prev = new char[26];
-        for (int i = 1; i < T.length(); i++) {
-            prev[T.charAt(i) - 97] = T.charAt(i - 1);
+        for (int i = 1; i < T.length; i++) {
+            prev[T[i] - 97] = T[i - 1];
         }
 
-        int[] cnts = new int[26];
-        for (char ch : S.toCharArray()) {
+        int[] cnt = new int[26];
+        for (char ch : S) {
             int target = ch - 97;
-            if (prev[target] == '\0' || cnts[prev[target] - 97] > cnts[target]) {
-                cnts[target]++;
+            if (prev[target] == '\0' || cnt[prev[target] - 97] > cnt[target]) {
+                cnt[target]++;
             }
         }
 
-        System.out.println(cnts[T.charAt(T.length() - 1) - 97]);
+        System.out.println(cnt[T[T.length - 1] - 97]);
 
         br.close();
     }
