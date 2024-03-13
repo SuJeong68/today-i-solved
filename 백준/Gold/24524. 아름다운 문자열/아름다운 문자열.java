@@ -9,20 +9,15 @@ public class Main {
         String S = br.readLine();
         String T = br.readLine();
 
-        int[] prev = new int[26];
-        prev[T.charAt(0) - 97] = -1;
+        char[] prev = new char[26];
         for (int i = 1; i < T.length(); i++) {
             prev[T.charAt(i) - 97] = T.charAt(i - 1);
         }
 
         int[] cnts = new int[26];
         for (char ch : S.toCharArray()) {
-            if (!T.contains(String.valueOf(ch))) {
-                continue;
-            }
-
             int target = ch - 97;
-            if (prev[target] == -1 || cnts[prev[target] - 97] > cnts[target]) {
+            if (prev[target] == '\0' || cnts[prev[target] - 97] > cnts[target]) {
                 cnts[target]++;
             }
         }
